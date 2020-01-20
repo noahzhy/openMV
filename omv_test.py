@@ -4,7 +4,7 @@ import sensor, image, time, lcd
 lcd.init(freq=15000000)
 sensor.reset()
 # RGB565 彩色模式
-# sensor.set_pixformat(sensor.RGB565)
+#sensor.set_pixformat(sensor.RGB565)
 # 灰度图 模式
 sensor.set_pixformat (sensor.GRAYSCALE)
 # frames size QVGA (320x240)
@@ -12,9 +12,9 @@ sensor.set_framesize(sensor.QVGA)
 # Wait for settings take effect
 sensor.skip_frames(time = 2000)
 # 白平衡关闭
-sensor.set_auto_whitebal(False)
+#sensor.set_auto_whitebal(False)
 # 自动增益关闭
-sensor.set_auto_gain(False)
+#sensor.set_auto_gain(False)
 # Create a clock object to track the FPS
 clock = time.clock()
 
@@ -29,9 +29,8 @@ def main():
         # Copy of the image return value
         img = sensor.snapshot().copy()
         img_diff = img.difference(img_pre)
-        #img_pre = sensor.snapshot().copy()
         # 按照给定的阈值，对运算后的图像进行二值化分割
-        img_diff.binary([GRAYSCALE_thresholds], invert = 0)
+        img_diff.binary([GRAYSCALE_thresholds], invert=0)
         # 侵蚀函数，需要给定噪声大小与颜色的阈值
         #img_diff.erode(1, threshold = 3)
         #img_diff.dilate (1)
