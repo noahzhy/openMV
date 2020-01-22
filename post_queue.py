@@ -18,7 +18,5 @@ def add_queue(obj=Class.FallLog()):
 
 
 if __name__ == "__main__":
-    # init_queue()
     # obj = Class.FallLog()
     add_queue()
-    # main()
