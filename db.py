@@ -11,11 +11,12 @@ db_log = config.get('db', 'db_log')
 def add_log(obj=Class.FallLog()):
     conn = sqlite3.connect(db_log)
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS log(
-                    timestamp text, 
-                    log text, 
-                    status integer, 
-                    position text)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS log (
+        timestamp TEXT,
+        log       TEXT,
+        status    INTEGER,
+        position  TEXT
+    )''')
 
     # header = ['timestamp', 'content', 'status', 'position']
     c.execute("INSERT INTO log VALUES (?,?,?,?)", obj.get_data())

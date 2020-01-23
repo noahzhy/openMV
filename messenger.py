@@ -23,25 +23,22 @@ def read_log():
 
     conn = sqlite3.connect(db_log)
     cursor = conn.cursor()
-    cursor.execute('select * from log where status=?', (0,))
-    values = cursor.fetchall()
+    values = cursor.execute('select * from log where status=?', (0,)).fetchall()
 
     for v in values:
-        post_log(v)
+        post_log(conn, v)
 
+    conn.commit()
     cursor.close()
     conn.close()
 
     return True
 
 
-def post_log(v):
-    timestamp, log, status, position = v
-    print(timestamp)
-    conn = sqlite3.connect(db_log)
+def post_log(conn, v):
     cursor = conn.cursor()
+    timestamp, log, status, position = v
     cursor.execute("UPDATE log SET status = 1 WHERE timestamp = '{}'".format(timestamp))
-    # print(log_dict)
     return True
 
 
