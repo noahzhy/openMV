@@ -14,7 +14,7 @@ log_file_name = config.get('log', 'log_file_name')
 file_path = os.path.join(os.getcwd(), log_file_name)
 
 def read_log():
-    # false_post_status_logs = []
+    # false_status_logs = []
     if first_running:
         obj = Class.FallLog()
         obj.set_content('first running')
@@ -28,15 +28,15 @@ def read_log():
     items = utils.csvDictReader(file_path)
     for i in items:
         counter += 1
-        if i['post_status'] == 'False':
+        if i['status'] == 'False':
             if post_log(i):
-                i['post_status'] == 'True'
+                i['status'] == 'True'
     # items
                     
 
 
     
-    # print(false_post_status_logs)
+    # print(false_status_logs)
     return True
 
 

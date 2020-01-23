@@ -1,5 +1,5 @@
 import os
-import csv
+import sqlite3
 import Class
 import configparser
 
@@ -8,17 +8,19 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 def add_log(obj=Class.FallLog()):
-    log_file_name = config.get('log', 'log_file_name')
-    file_path = os.path.join(os.getcwd(), log_file_name)
-    header = ['timestamp', 'content', 'post_status', 'address']
-    if not os.path.isfile(file_path):
-        with open(file_path, 'w+', newline='') as f:
-            write = csv.writer(f)
-            write.writerow(header)
+    log_file_name = config.get('db', 'db_log')
+    conn = sqlite3.connect(log_file_name)
+    c = conn.cursor()
+    c.execute('''CREATE TABLE log(
+                    timestamp text, 
+                    log text, 
+                    status integer, 
+                    address text)''')
 
-    with open(file_path, 'a+', newline='') as f:
-        write = csv.DictWriter(f, obj.get_dict().keys())
-        write.writerow(obj.get_dict())
+    # header = ['timestamp', 'content', 'status', 'address']
+    c.execute("INSERT INTO log VALUES ({})".format(obj.get_data()))
+    conn.commit()
+    conn.close()
 
     return True
 
