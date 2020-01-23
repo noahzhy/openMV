@@ -18,7 +18,7 @@ def add_log(obj=Class.FallLog()):
                     position text)''')
 
     # header = ['timestamp', 'content', 'status', 'position']
-    c.execute("INSERT INTO log VALUES ({})".format(obj.get_data()))
+    c.execute("INSERT INTO log VALUES (?,?,?,?)", obj.get_data())
     conn.commit()
     conn.close()
 

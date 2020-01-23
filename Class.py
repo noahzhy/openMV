@@ -23,7 +23,7 @@ class FallLog:
         #     'status': self.status,
         #     'address': self.address,
         # }
-        d = "'{}', '{}', {}, '{}'".format(self.timestamp, self.log, self.status, self.position)
+        d = (self.timestamp, self.log, self.status, self.position)
         return d
 
     def get_log(self):

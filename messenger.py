@@ -1,9 +1,8 @@
-import csv
-import os
-import log
 import Class
 import configparser
-import utils
+import db
+import requests
+import sqlite3
 
 
 config = configparser.ConfigParser()
@@ -13,32 +12,36 @@ debug_mode = config.getboolean('debug', 'debug_mode')
 db_log = config.get('db', 'db_log')
 
 def read_log():
-    # false_status_logs = []
     if first_running or debug_mode:
         obj = Class.FallLog()
         obj.set_log('first running')
         obj.set_position('messenger first running')
-        if log.add_log(obj) and debug_mode:
+        db.add_log(obj)
+        if not debug_mode:
             config.set('first', 'first_running', 'False')
             config.write(open('config.ini', 'w'))
 
-    # 初始化行数计数器, 默认包含 header
-    # counter = 1
-    # items = utils.csvDictReader(file_path)
-    # for i in items:
-    #     counter += 1
-    #     if i['status'] == 'False':
-    #         if post_log(i):
-    #             i['status'] == 'True'
+    conn = sqlite3.connect(db_log)
+    cursor = conn.cursor()
+    cursor.execute('select * from log where status=?', (0,))
+    values = cursor.fetchall()
 
+    for v in values:
+        post_log(v)
 
-    
-    # print(false_status_logs)
+    cursor.close()
+    conn.close()
+
     return True
 
 
-def post_log(log_dict):
-    print(log_dict)
+def post_log(v):
+    timestamp, log, status, position = v
+    print(timestamp)
+    conn = sqlite3.connect(db_log)
+    cursor = conn.cursor()
+    cursor.execute("UPDATE log SET status = 1 WHERE timestamp = '{}'".format(timestamp))
+    # print(log_dict)
     return True
 
 
