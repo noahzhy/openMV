@@ -4,7 +4,7 @@ from datetime import datetime
 class FallLog:
     def __init__(self):
         self.address = get_address()
-        self.content = get_content()
+        self.content = 'fall detected'
         self.post_status = False
         self.timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -17,16 +17,20 @@ class FallLog:
         }
         return dict
 
+    def get_content(self):
+        return self.content
+
+    def set_content(self, content):
+        self.content = content
+        return True
+
 
 def get_address():
     return '11 street'
 
 
-def get_content():
-    return 'fall detected'
-
-
 if __name__ == "__main__":
     obj = FallLog()
+    obj.set_content('login fall')
     print(obj.get_dict())
     # print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
