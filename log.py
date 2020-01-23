@@ -11,7 +11,7 @@ def add_log(obj=Class.FallLog()):
     log_file_name = config.get('db', 'db_log')
     conn = sqlite3.connect(log_file_name)
     c = conn.cursor()
-    c.execute('''CREATE TABLE log(
+    c.execute('''CREATE TABLE IF NOT EXISTS log(
                     timestamp text, 
                     log text, 
                     status integer, 
