@@ -13,24 +13,30 @@ db_log = config.get('db', 'db_log')
 
 def read_log():
     if first_running or debug_mode:
+        # if not debug_mode:
         obj = Class.FallLog()
         obj.set_log('first running')
         obj.set_position('messenger first running')
         db.add_log(obj)
-        if not debug_mode:
-            config.set('first', 'first_running', 'False')
-            config.write(open('config.ini', 'w'))
+        config.set('first', 'first_running', 'False')
+        config.write(open('config.ini', 'w'))
 
-    conn = sqlite3.connect(db_log)
-    cursor = conn.cursor()
-    values = cursor.execute('select * from log where status=?', (0,)).fetchall()
+    try:
+        conn = sqlite3.connect(db_log)
+        cursor = conn.cursor()
+        values = cursor.execute('select * from log where status=?', (0,)).fetchall()
 
-    for v in values:
-        post_log(conn, v)
+        for v in values:
+            post_log(conn, v)
 
-    conn.commit()
-    cursor.close()
-    conn.close()
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+    except Exception as e:
+        # 数据库连接，操作异常
+        print(e)
+        pass
 
     return True
 
