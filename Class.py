@@ -6,7 +6,7 @@ class FallLog:
         self.address = get_address()
         self.content = 'fall detected'
         self.post_status = False
-        self.timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S %f')
 
     def get_dict(self):
         dict = {
