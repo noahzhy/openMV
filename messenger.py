@@ -10,29 +10,26 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 first_running = config.getboolean('first', 'first_running')
 debug_mode = config.getboolean('debug', 'debug_mode')
-log_file_name = config.get('log', 'log_file_name')
-file_path = os.path.join(os.getcwd(), log_file_name)
+db_log = config.get('db', 'db_log')
 
 def read_log():
     # false_status_logs = []
-    if first_running:
+    if first_running or debug_mode:
         obj = Class.FallLog()
-        obj.set_content('first running')
-        if log.add_log(obj) and not debug_mode:
+        obj.set_log('first running')
+        obj.set_position('messenger first running')
+        if log.add_log(obj) and debug_mode:
             config.set('first', 'first_running', 'False')
             config.write(open('config.ini', 'w'))
 
-
     # 初始化行数计数器, 默认包含 header
-    counter = 1
-    items = utils.csvDictReader(file_path)
-    for i in items:
-        counter += 1
-        if i['status'] == 'False':
-            if post_log(i):
-                i['status'] == 'True'
-    # items
-                    
+    # counter = 1
+    # items = utils.csvDictReader(file_path)
+    # for i in items:
+    #     counter += 1
+    #     if i['status'] == 'False':
+    #         if post_log(i):
+    #             i['status'] == 'True'
 
 
     

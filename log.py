@@ -6,18 +6,18 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
+db_log = config.get('db', 'db_log')
 
 def add_log(obj=Class.FallLog()):
-    log_file_name = config.get('db', 'db_log')
-    conn = sqlite3.connect(log_file_name)
+    conn = sqlite3.connect(db_log)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS log(
                     timestamp text, 
                     log text, 
                     status integer, 
-                    address text)''')
+                    position text)''')
 
-    # header = ['timestamp', 'content', 'status', 'address']
+    # header = ['timestamp', 'content', 'status', 'position']
     c.execute("INSERT INTO log VALUES ({})".format(obj.get_data()))
     conn.commit()
     conn.close()
