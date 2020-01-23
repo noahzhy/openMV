@@ -3,9 +3,9 @@ import csv
 import Class
 
 
-def add_queue(obj=Class.FallLog()):
-    queue_file_name = 'post_queue.csv'
-    file_path = os.path.join(os.getcwd(), queue_file_name)
+def add_log(obj=Class.FallLog()):
+    log_file_name = 'log.csv'
+    file_path = os.path.join(os.getcwd(), log_file_name)
     header = ['timestamp', 'content', 'post_status', 'address']
     if not os.path.isfile(file_path):
         with open(file_path, 'w+', newline='') as f:
@@ -19,4 +19,4 @@ def add_queue(obj=Class.FallLog()):
 
 if __name__ == "__main__":
     # obj = Class.FallLog()
-    add_queue()
+    add_log()
