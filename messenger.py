@@ -6,6 +6,13 @@ import sqlite3
 
 config = Config()
 
+def check_version(parameter_list):
+    sess = requests.Session()
+    r = sess.post(url = config.set_api_version)
+    if r.status_code == 200:
+        config.version = r.text
+
+
 def load_log():
     if config.first_running=='True' or config.debug_mode:
         # if not debug_mode:

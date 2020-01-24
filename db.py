@@ -1,15 +1,12 @@
 import os
 import sqlite3
-import Class
-import configparser
+from Class import *
 
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-db_log = config.get('DB', 'db_log')
+config = Config()
 
-def add_log(obj=Class.Log()):
-    conn = sqlite3.connect(db_log)
+def add_log(obj=Log()):
+    conn = sqlite3.connect(config.db_log)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS log (
         timestamp TEXT,

@@ -1,4 +1,5 @@
 import configparser
+# import db
 from datetime import datetime
 
 
@@ -65,6 +66,14 @@ class Config:
         config.write(open('config.ini', 'w'))
         return new_api_status
 
+    def get_api_version(self):
+        return config.get('API', 'api_version')
+
+    def set_api_version(self, new_api_version):
+        config.set('API', 'api_version', new_api_version)
+        config.write(open('config.ini', 'w'))
+        return new_api_version
+
     def get_first_running(self):
         return config.get('DEFAULT', 'first_running')
 
@@ -73,17 +82,27 @@ class Config:
         config.write(open('config.ini', 'w'))
         return new_first_running
 
-    db_log = property(get_db_log, set_db_log)
-    debug_mode = property(get_debug_mode, set_debug_mode)
-    api_status = property(get_api_status, set_api_status)
+    def get_version(self):
+        return config.get('DEFAULT', 'version')
+
+    def set_version(self, new_version):
+        config.set('DEFAULT', 'version', new_version)
+        config.write(open('config.ini', 'w'))
+        return new_version
+
     first_running = property(get_first_running, set_first_running)
+    version = property(get_version, set_version)
+    db_log = property(get_db_log, set_db_log)
+    api_status = property(get_api_status, set_api_status)
+    api_version = property(get_api_version, set_api_version)
+    debug_mode = property(get_debug_mode, set_debug_mode)
 
 
 if __name__ == "__main__":
-    obj = Log()
-    print(obj.get_data())
+    # obj = Log()
+    # print(obj.get_data())
     cfg = Config()
-    print(cfg.first_running)
+    print(cfg.version)
 
     # print(g)
     # print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))

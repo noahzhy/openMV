@@ -1,8 +1,8 @@
-import csv
+def find_new_version(a, b='1.2.0'):
+    return True if a < b else False
 
 
-def csvDictReader(path):
-    with open(path) as rf:
-        reader = csv.DictReader(rf)
-        items = list(reader)
-    return items
+if __name__ == "__main__":
+    a = '1.2.0'
+    res = find_new_version(a)
+    print(res)
