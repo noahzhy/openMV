@@ -6,9 +6,9 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
-db_log = config.get('db', 'db_log')
+db_log = config.get('DB', 'db_log')
 
-def add_log(obj=Class.FallLog()):
+def add_log(obj=Class.Log()):
     conn = sqlite3.connect(db_log)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS log (
@@ -27,5 +27,5 @@ def add_log(obj=Class.FallLog()):
 
 
 if __name__ == "__main__":
-    # obj = Class.FallLog()
+    # obj = Class.Log()
     add_log()

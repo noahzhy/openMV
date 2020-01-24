@@ -1,35 +1,32 @@
-import Class
-import configparser
+from Class import *
 import db
 import requests
 import sqlite3
 
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-first_running = config.getboolean('first', 'first_running')
-debug_mode = config.getboolean('debug', 'debug_mode')
-db_log = config.get('db', 'db_log')
+config = Config()
 
-def read_log():
-    if first_running or debug_mode:
+def load_log():
+    if config.first_running=='True' or config.debug_mode:
         # if not debug_mode:
-        obj = Class.FallLog()
+        obj = Log()
         obj.set_log('first running')
         obj.set_position('messenger first running')
         db.add_log(obj)
-        config.set('first', 'first_running', 'False')
-        config.write(open('config.ini', 'w'))
+        config.first_running = 'False'
 
     try:
-        conn = sqlite3.connect(db_log)
+        conn = sqlite3.connect(config.db_log)
         cursor = conn.cursor()
         values = cursor.execute('select * from log where status=?', (0,)).fetchall()
 
         for v in values:
-            post_log(conn, v)
+            if post_log(v):
+                timestamp = v[0]
+                # print(timestamp)
+                cursor.execute("UPDATE log SET status = 1 WHERE timestamp = '{}'".format(timestamp))
+                conn.commit()
 
-        conn.commit()
         cursor.close()
         conn.close()
         
@@ -41,12 +38,15 @@ def read_log():
     return True
 
 
-def post_log(conn, v):
-    cursor = conn.cursor()
-    timestamp, log, status, position = v
-    cursor.execute("UPDATE log SET status = 1 WHERE timestamp = '{}'".format(timestamp))
+def post_log(v):
+    sess = requests.Session()
+    url = config.api_status
+    data = {
+
+    }
+    # sess.post(url=url, data=data)
     return True
 
 
 if __name__ == "__main__":
-    read_log()
+    load_log()
