@@ -6,6 +6,9 @@ from datetime import datetime
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+def save_config():
+    config.write(open('config.ini', 'w'))
+
 class Log:
     def __init__(self):
         self.timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
@@ -47,7 +50,7 @@ class Config:
 
     def set_db_log(self, new_db_log_name):
         config.set('DB', 'db_log', new_db_log_name)
-        config.write(open('config.ini', 'w'))
+        save_config()
         return new_db_log_name
 
     def get_debug_mode(self):
@@ -55,23 +58,31 @@ class Config:
 
     def set_debug_mode(self, new_debug_mode):
         config.set('DEBUG', 'debug_mode', new_debug_mode)
-        config.write(open('config.ini', 'w'))
+        save_config()
         return new_debug_mode
 
+    def get_domain(self):
+        return config.get('API', 'domain')
+
+    def set_domain(self, new_domain):
+        config.set('API', 'domain', new_domain)
+        save_config()
+        return new_domain
+
     def get_api_status(self):
-        return config.get('API', 'api_status')
+        return config.get('API', 'domain') + config.get('API', 'api_status')
 
     def set_api_status(self, new_api_status):
         config.set('API', 'api_status', new_api_status)
-        config.write(open('config.ini', 'w'))
+        save_config()
         return new_api_status
 
     def get_api_version(self):
-        return config.get('API', 'api_version')
+        return config.get('API', 'domain') + config.get('API', 'api_version')
 
     def set_api_version(self, new_api_version):
         config.set('API', 'api_version', new_api_version)
-        config.write(open('config.ini', 'w'))
+        save_config()
         return new_api_version
 
     def get_first_running(self):
@@ -79,7 +90,7 @@ class Config:
 
     def set_first_running(self, new_first_running):
         config.set('DEFAULT', 'first_running', new_first_running)
-        config.write(open('config.ini', 'w'))
+        save_config()
         return new_first_running
 
     def get_version(self):
@@ -87,7 +98,7 @@ class Config:
 
     def set_version(self, new_version):
         config.set('DEFAULT', 'version', new_version)
-        config.write(open('config.ini', 'w'))
+        save_config()
         return new_version
 
     first_running = property(get_first_running, set_first_running)
@@ -96,12 +107,14 @@ class Config:
     api_status = property(get_api_status, set_api_status)
     api_version = property(get_api_version, set_api_version)
     debug_mode = property(get_debug_mode, set_debug_mode)
+    domain = property(get_domain, set_domain)
 
 
 if __name__ == "__main__":
     # obj = Log()
     # print(obj.get_data())
     cfg = Config()
+    # cfg.first_running = 'False'
     print(cfg.version)
 
     # print(g)
