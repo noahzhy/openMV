@@ -21,6 +21,8 @@ def check_version():
                 db.add_log(obj)
                 if download_files():
                     msg.load_log()
+                    config.version = r.text.strip()
+                    config.first_running = 'True'
                 
         else:
             print('internet connect error')
